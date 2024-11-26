@@ -31,7 +31,7 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>{{ $barang }}</h3>
-                                <p>Barang</p>
+                                <p>Assets</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>

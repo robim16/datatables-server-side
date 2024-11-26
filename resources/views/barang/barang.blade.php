@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <div class="text-right">
                                     <a href="/barang/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add
-                                        Barang</a>
+                                        Asset</a>
                                 </div>
                             </div>
                             <!-- /.card-header -->
@@ -42,7 +42,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nama</th>
+                                            <th>Name</th>
                                             <th>Category</th>
                                             <th>Supplier</th>
                                             <th>Stock</th>

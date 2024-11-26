@@ -20,7 +20,7 @@ class BarangController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->editColumn('price', function ($data) {
-                    return "Rp. " . number_format($data->price, 0);
+                    return "$ " . number_format($data->price, 0);
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
