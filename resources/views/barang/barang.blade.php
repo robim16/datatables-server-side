@@ -47,7 +47,8 @@
                                             <th>Supplier</th>
                                             <th>Stock</th>
                                             <th>Price</th>
-                                            {{-- <th>Note</th> --}}
+                                            <th>Appraisal value</th>
+                                            <th>Date appraisal</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -103,10 +104,14 @@
                         data: 'price',
                         name: 'price'
                     },
-                    // {
-                    //     data: 'note',
-                    //     name: 'note'
-                    // },
+                    {
+                        data: 'appraisals.value',
+                        name: 'value'
+                    },
+                    {
+                        data: 'appraisals.date',
+                        name: 'date'
+                    },
                     {
                         data: 'action',
                         name: 'action',
