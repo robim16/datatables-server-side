@@ -36,20 +36,29 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="exampleServerSide"
+                                <table id="assets-table"
                                     class="table table-striped table-bordered table-hover text-center barang-table"
                                     style="width: 100%">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Category</th>
-                                            <th>Supplier</th>
-                                            <th>Stock</th>
-                                            <th>Price</th>
-                                            <th>Appraisal value</th>
-                                            <th>Date appraisal</th>
-                                            <th>Action</th>
+                                            <th class="">#</th>
+                                            <th class="head">Name</th>
+                                            <th class="head">Category</th>
+                                            <th class="head">Supplier</th>
+                                            <th class="head">Stock</th>
+                                            <th class="head">Price</th>
+                                            {{-- <th class="head">Appraisal value</th> --}}
+                                            <th class="">Action</th>
+                                        </tr>
+                                        <tr>
+                                            <th class=""></th>
+                                            <th class="head">Name</th>
+                                            <th class="head">Category</th>
+                                            <th class="head">Supplier</th>
+                                            <th class="head">Stock</th>
+                                            <th class="head">Price</th>
+                                            {{-- <th class="head">Appraisal value</th> --}}
+                                            <th class=""></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,17 +76,30 @@
     </div>
 
     <script>
-        $(function() {
-
-            var table = $('.barang-table').DataTable({
+        $(document).ready(function () {
+            
+            var table = $('#assets-table').DataTable({
                 processing: true,
-                responsive: true,
+                responsive: false,
                 serverSide: true,
-                columnDefs: [{
+                columnDefs: [
+                    {
                         "className": "dt-center",
                         "targets": "_all"
                     },
-
+                    // {
+                    //     "targets": [6],
+                    //     "render": function ( data, type, row ) {
+                    //         if (row.appraisals.length > 0) {
+                    //             return row.appraisals[0]?.value
+                    //         }
+                    //         else{
+                    //             return 0
+                    //         }
+                            
+                    //     }
+                    // },
+    
                 ],
                 ajax: "{{ route('barang.index') }}",
                 columns: [{
@@ -104,23 +126,73 @@
                         data: 'price',
                         name: 'price'
                     },
-                    {
-                        data: 'appraisals.value',
-                        name: 'value'
-                    },
-                    {
-                        data: 'appraisals.date',
-                        name: 'date'
-                    },
+                    // {
+                    //     data: 'appraisals.value',
+                    //     name: 'value',
+                    // },
                     {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
+                initComplete: function () {
+
+                    table.columns('.head').every( function () {
+                        var column = this;
+                        var select = $('<select class=""><option value=""></option></select>')
+                            .appendTo( $("#assets-table thead tr:eq(1) th").eq(column.index()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+
+                            table.cells( null, this).render('display').unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' );
+                            });
+                    });
+                }
             });
+    
+            // table.on('xhr.dt', function ( e, settings, json, xhr ) {
+    
+            //     var json_data = table.ajax.json();
+    
+            //     table.rows.add(json_data.data).draw();
+    
+    
+            //     table.columns('.head').every( function () {
+            //         var column = this;
+            //         var select = $('<select class=""><option value=""></option></select>')
+            //             .appendTo( $("#assets-table thead tr:eq(1) th").eq(column.index()).empty() )
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
+    
+                            
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
+    
+    
+            //         table.cells( null, this).render('display').unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' );
+            //         });
+                    
+            //     })
+    
+            // })
         });
+
     </script>
 
 @endsection

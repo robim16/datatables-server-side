@@ -16,7 +16,11 @@ class BarangController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Barang::with('appraisals')->orderBy('name', 'asc')->get();
+
+            $data = Barang::with(['appraisals:id,barang_id,value'])
+                ->orderBy('name', 'asc')
+                // ->limit(100)
+                ->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
