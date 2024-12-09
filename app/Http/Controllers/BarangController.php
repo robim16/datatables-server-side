@@ -6,6 +6,7 @@ use App\Models\Barang;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class BarangController extends Controller
@@ -15,12 +16,20 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
+        
         if ($request->ajax()) {
 
             $data = Barang::with(['appraisals:id,barang_id,value'])
                 ->orderBy('name', 'asc')
-                // ->limit(100)
                 ->get();
+
+
+            // $data_qb = DB::table('barangs')
+            //     ->leftJoin('appraisals', 'barangs.id', 'appraisals.barang_id')
+            //     ->select('barangs.*', 'appraisals.id', 'appraisals.barang_id',
+            //     'appraisals.value')
+            //     ->orderBy('barangs.name')
+            //     ->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -29,10 +38,10 @@ class BarangController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '';
-                    $editButton = '<form class="d-inline" action="/barang/' . $row->id_barang . '/edit" method="GET">
+                    $editButton = '<form class="d-inline" action="/barang/' . $row->id . '/edit" method="GET">
                        <button type="submit" class="btn btn-success btn-sm mr-1"><i class="fa-solid fa-pen"></i> Edit</button> </form>';
                     $btn .= $editButton;
-                    $deleteButton = '<form class="d-inline" action=/barang/' . $row->id_barang . '
+                    $deleteButton = '<form class="d-inline" action=/barang/' . $row->id . '
                        method="POST">
                        <input type="hidden" name="_token" value=' . csrf_token() . '>
                        <input type="hidden" name="_method" value="delete"> 
