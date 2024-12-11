@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 use Yajra\DataTables\DataTables;
 
 class BarangController extends Controller
@@ -140,6 +141,44 @@ class BarangController extends Controller
         } catch (Exception $ex) {
             Alert::warning('Error', 'Cant deleted, Barang already used !');
             return redirect('/barang');
+        }
+    }
+
+
+    public function export_csv()
+    {
+        try {
+
+            $writer = SimpleExcelWriter::streamDownload('assets.csv');
+            $query = Barang::with(['appraisals:id,barang_id,value'])
+                ->orderBy('name', 'asc')
+                ->get();
+
+
+            $i = 0;
+
+            foreach ($query->lazy(1000) as $asset) 
+            {
+                $writer->addRow([
+                    'id' => $asset->id,
+                    'name' => $asset->name,
+                    'category' => $asset->category,
+                    'supplier' => $asset->supplier,
+                    'stock' => $asset->stock,
+                    'price' => $asset->price,
+                ]);
+    
+                if ($i % 1000 === 0) {
+                    flush(); // Flush the buffer every 1000 rows
+                }
+                $i++;
+            }
+    
+            return $writer->toBrowser();
+
+        } catch (\Throwable $th) {
+            // throw $th;
+            return $th;
         }
     }
 }

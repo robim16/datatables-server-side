@@ -20,3 +20,5 @@ Route::get('/', [DashboardController::class, 'index']);
 
 //route barang
 Route::resource('/barang', BarangController::class);
+
+Route::get('/export/csv', [BarangController::class, 'export_csv'])->name('assets.csv');

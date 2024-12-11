@@ -32,6 +32,8 @@
                                 <div class="text-right">
                                     <a href="/barang/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add
                                         Asset</a>
+                                    <a href="{{ route('assets.csv')}}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Export
+                                        Assets</a>
                                 </div>
                             </div>
                             <!-- /.card-header -->
